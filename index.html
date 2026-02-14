@@ -960,30 +960,36 @@
             </div>
         </div>
     </footer>
+<script>
+    // Capítulos na ordem definida (19 capítulos)
+    const chapters = [
+        { name: "Evelyn Hugo", part: "parte 1", audioSrc: "audios/evelyn-pagina-07-13.m4a", duration: "18:03" },
+        { name: "Evelyn Hugo", part: "parte 2", audioSrc: "audios/evelyn-pagina-14-19.m4a", duration: "14:45" },
+        { name: "Evelyn Hugo", part: "parte 3", audioSrc: "audios/evelyn-pagina-20-32.m4a", duration: "31:27" },
+        { name: "Evelyn Hugo", part: "parte 4", audioSrc: "audios/evelyn-pagina-33-39.m4a", duration: "16:05" },
 
-    <script>
-        // Capítulos na nova ordem solicitada (19 capítulos no total)
-        const chapters = [
-            { name: "Evelyn Hugo", part: "parte 1", audioSrc: "./audios/evelyn página 07 a 13.m4a", duration: "18:03" },
-            { name: "Evelyn Hugo", part: "parte 2", audioSrc: "./audios/evelyn página 14 a 19.m4a", duration: "14:45" },
-            { name: "Evelyn Hugo", part: "parte 3", audioSrc: "./audios/evelyn página 20 a 32.m4a", duration: "31:27" },
-            { name: "Evelyn Hugo", part: "parte 4", audioSrc: "./audios/evelyn página 33 a 39.m4a", duration: "16:05" },
-            { name: "Ernie Diaz", part: "", audioSrc: "./audios/Ernie Diaz.m4a.mp4", duration: "35:52" },
-            { name: "Don Adler", part: "parte 1", audioSrc: "./audios/Don Adler Cap 6 - parte 1.m4a.mp4", duration: "22:38" },
-            { name: "Don Adler", part: "parte 2", audioSrc: "./audios/Don Adler Cap 6 - parte 2.m4a.mp4", duration: "55:24" },
-            { name: "Don Adler", part: "parte 3", audioSrc: "./audios/Don Adler Cap 6 - parte 3.m4a.mp4", duration: "23:57" },
-            { name: "Don Adler", part: "parte 4", audioSrc: "./audios/Don Adler Cap 6 - parte 4.m4a.mp4", duration: "46:58" },
-            { name: "Don Adler", part: "parte 5", audioSrc: "./audios/Don Adler cap 6 - parte 5.m4a.mp4", duration: "14:43" },
-            { name: "Mick Riva", part: "parte 1", audioSrc: "./audios/Mick Riva Cap 7 - parte 1.m4a.mp4", duration: "54:00" },
-            { name: "Mick Riva", part: "parte 2", audioSrc: "./audios/Mick Riva Cap 7 - parte 2.m4a.mp4", duration: "20:42" },
-            { name: "Rex North", part: "", audioSrc: "./audios/Rex North Cap 8.m4a.mp4", duration: "44:31" },
-            { name: "Harry Cameron", part: "parte 1", audioSrc: "audios/Harry Cameron - parte 1.m4a", duration: "0:00" },
-            { name: "Harry Cameron", part: "parte 2", audioSrc: "audios/Harry Cameron - parte 2.m4a", duration: "0:00" },
-            { name: "Max Girard", part: "parte 1", audioSrc: "audios/Max Girard - parte 1.m4a", duration: "0:00" },
-            { name: "Max Girard", part: "parte 2", audioSrc: "audios/Max Girard - parte 2.m4a", duration: "0:00" },
-            { name: "Robert Jamison", part: "parte 1", audioSrc: "audios/Robert Jamison - parte 1.m4a", duration: "0:00" },
-            { name: "Robert Jamison", part: "parte 2", audioSrc: "audios/Robert Jamison - parte 2.m4a", duration: "0:00" }
-        ];
+        { name: "Ernie Diaz", part: "", audioSrc: "audios/ernie-diaz.m4a", duration: "35:52" },
+
+        { name: "Don Adler", part: "parte 1", audioSrc: "audios/don-adler-cap6-parte-1.m4a", duration: "22:38" },
+        { name: "Don Adler", part: "parte 2", audioSrc: "audios/don-adler-cap6-parte-2.m4a", duration: "55:24" },
+        { name: "Don Adler", part: "parte 3", audioSrc: "audios/don-adler-cap6-parte-3.m4a", duration: "23:57" },
+        { name: "Don Adler", part: "parte 4", audioSrc: "audios/don-adler-cap6-parte-4.m4a", duration: "46:58" },
+        { name: "Don Adler", part: "parte 5", audioSrc: "audios/don-adler-cap6-parte-5.m4a", duration: "14:43" },
+
+        { name: "Mick Riva", part: "parte 1", audioSrc: "audios/mick-riva-cap7-parte-1.m4a", duration: "54:00" },
+        { name: "Mick Riva", part: "parte 2", audioSrc: "audios/mick-riva-cap7-parte-2.m4a", duration: "20:42" },
+
+        { name: "Rex North", part: "", audioSrc: "audios/rex-north-cap8.m4a", duration: "44:31" },
+
+        { name: "Harry Cameron", part: "parte 1", audioSrc: "audios/harry-cameron-parte-1.m4a", duration: "0:00" },
+        { name: "Harry Cameron", part: "parte 2", audioSrc: "audios/harry-cameron-parte-2.m4a", duration: "0:00" },
+
+        { name: "Max Girard", part: "parte 1", audioSrc: "audios/max-girard-parte-1.m4a", duration: "0:00" },
+        { name: "Max Girard", part: "parte 2", audioSrc: "audios/max-girard-parte-2.m4a", duration: "0:00" },
+
+        { name: "Robert Jamison", part: "parte 1", audioSrc: "audios/robert-jamison-parte-1.m4a", duration: "0:00" },
+        { name: "Robert Jamison", part: "parte 2", audioSrc: "audios/robert-jamison-parte-2.m4a", duration: "0:00" }
+    ];
 
         let currentChapterIndex = 0;
         let currentAudio = null;
@@ -1417,3 +1423,4 @@
 </body>
 
 </html>
+
