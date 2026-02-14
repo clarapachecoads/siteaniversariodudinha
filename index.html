@@ -1,0 +1,1418 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feliz Aniversário, Meu Amor</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Playfair+Display:wght@400;500;600&family=Raleway:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --deep-black: #0a0a0a;
+            --emerald: #046307;
+            --gold: #d4af37;
+            --cream: #f5f1e8;
+            --transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        body {
+            font-family: 'Raleway', sans-serif;
+            background-color: var(--deep-black);
+            color: var(--cream);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Botão do Índice */
+        .chapter-index-toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(10, 10, 10, 0.9);
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 1001;
+            transition: var(--transition);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+        }
+
+        .chapter-index-toggle:hover {
+            background: var(--gold);
+            color: var(--deep-black);
+            transform: scale(1.1);
+        }
+
+        /* Painel do Índice */
+        .chapter-index-panel {
+            position: fixed;
+            top: 0;
+            left: -400px;
+            width: 350px;
+            height: 100vh;
+            background: linear-gradient(135deg, rgba(10, 10, 10, 0.98), rgba(4, 99, 7, 0.2));
+            backdrop-filter: blur(10px);
+            border-right: 2px solid var(--gold);
+            z-index: 1000;
+            transition: left 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 80px 20px 30px;
+            overflow-y: auto;
+            box-shadow: 10px 0 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .chapter-index-panel.open {
+            left: 0;
+        }
+
+        .index-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .index-header h3 {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+
+        .index-header p {
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        .index-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .index-item {
+            margin-bottom: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            transition: var(--transition);
+            opacity: 0;
+            transform: translateX(-20px);
+            animation: slideIn 0.3s forwards;
+            animation-delay: calc(0.05s * var(--item-index));
+        }
+
+        @keyframes slideIn {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .index-item button {
+            width: 100%;
+            text-align: left;
+            background: rgba(255, 255, 255, 0.05);
+            border: none;
+            border-left: 3px solid transparent;
+            color: #ccc;
+            padding: 12px 15px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: 'Raleway', sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .index-item button:hover {
+            background: rgba(212, 175, 55, 0.1);
+            border-left-color: var(--gold);
+            color: var(--gold);
+            transform: translateX(5px);
+        }
+
+        .index-item.active button {
+            background: rgba(4, 99, 7, 0.3);
+            border-left-color: var(--emerald);
+            color: var(--gold);
+            font-weight: 600;
+        }
+
+        .index-number {
+            font-family: 'Cinzel', serif;
+            color: var(--emerald);
+            font-size: 0.9rem;
+            min-width: 60px;
+        }
+
+        .index-name {
+            flex-grow: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .index-part {
+            color: #888;
+            font-size: 0.85rem;
+            font-style: italic;
+        }
+
+        .index-duration {
+            font-size: 0.8rem;
+            color: #666;
+            margin-left: auto;
+        }
+
+        .index-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: transparent;
+            border: none;
+            color: var(--gold);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .index-close:hover {
+            transform: rotate(90deg);
+        }
+
+        /* Overlay escuro quando o índice está aberto */
+        .index-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            backdrop-filter: blur(3px);
+        }
+
+        .index-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Seção de Aniversário */
+        .birthday-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(rgba(10, 10, 10, 0.9), rgba(10, 10, 10, 0.7)),
+                        url('imagens/fotozepelim.png');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .birthday-content {
+            text-align: center;
+            padding: 2rem;
+            animation: fadeIn 2s ease-out;
+        }
+
+        .birthday-title {
+            font-family: 'Cinzel', serif;
+            font-size: 4.5rem;
+            color: var(--gold);
+            margin-bottom: 1rem;
+            text-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
+            font-weight: 600;
+            letter-spacing: 2px;
+        }
+
+        .birthday-subtitle {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: var(--cream);
+            margin-bottom: 2rem;
+            font-weight: 300;
+            opacity: 0.9;
+        }
+
+        .heart {
+            color: #ff6b8b;
+            animation: heartbeat 1.5s infinite;
+            display: inline-block;
+            margin: 0 10px;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* Seção Romântica - Nossas Fotos */
+        .romantic-section {
+            padding: 80px 0;
+            background-color: var(--deep-black);
+            position: relative;
+        }
+
+        .section-title {
+            text-align: center;
+            font-family: 'Cinzel', serif;
+            font-size: 2.5rem;
+            color: var(--gold);
+            margin-bottom: 50px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 2px;
+            background: linear-gradient(to right, transparent, var(--emerald), transparent);
+        }
+
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 60px;
+        }
+
+        .photo-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            height: 350px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            transition: var(--transition);
+        }
+
+        .photo-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(4, 99, 7, 0.2);
+        }
+
+        .photo-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .photo-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .photo-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(10, 10, 10, 0.9));
+            padding: 20px;
+            transform: translateY(100%);
+            transition: var(--transition);
+        }
+
+        .photo-item:hover .photo-caption {
+            transform: translateY(0);
+        }
+
+        .love-notes {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .note {
+            background: rgba(212, 175, 55, 0.05);
+            border-left: 3px solid var(--emerald);
+            padding: 25px;
+            margin: 30px 0;
+            font-style: italic;
+            font-size: 1.2rem;
+            color: var(--cream);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: var(--transition);
+            font-family: 'Playfair Display', serif;
+        }
+
+        .note.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Seção Audiolivro Surpresa */
+        .audiobook-section {
+            padding: 80px 0;
+            background: linear-gradient(var(--deep-black), #0c1a0c);
+            position: relative;
+            min-height: 100vh;
+        }
+
+        .audiobook-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .audiobook-intro {
+            text-align: center;
+            margin-bottom: 50px;
+            padding: 0 20px;
+        }
+
+        .audiobook-title {
+            font-family: 'Cinzel', serif;
+            font-size: 2.8rem;
+            color: var(--gold);
+            margin-bottom: 20px;
+        }
+
+        .audiobook-description {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: #ccc;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .chapter {
+            background: rgba(20, 20, 20, 0.8);
+            border-radius: 10px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(212, 175, 55, 0.1);
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1s ease, transform 1s ease;
+            display: none;
+        }
+
+        .chapter.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .chapter-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .chapter-number {
+            font-family: 'Cinzel', serif;
+            font-size: 1.2rem;
+            color: var(--emerald);
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+
+        .chapter-name {
+            font-family: 'Cinzel', serif;
+            font-size: 2.2rem;
+            color: var(--gold);
+            margin-bottom: 5px;
+        }
+
+        .chapter-part {
+            font-size: 1.1rem;
+            color: #aaa;
+            font-style: italic;
+            margin-top: 5px;
+        }
+
+        .audio-player {
+            background: rgba(30, 30, 30, 0.7);
+            border-radius: 8px;
+            padding: 25px;
+            margin-top: 20px;
+        }
+
+        .audio-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .play-btn {
+            background: var(--emerald);
+            border: none;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .play-btn:hover {
+            background: var(--gold);
+            transform: scale(1.05);
+        }
+
+        .progress-container {
+            flex-grow: 1;
+            background: rgba(255, 255, 255, 0.1);
+            height: 6px;
+            border-radius: 3px;
+            cursor: pointer;
+            overflow: hidden;
+            min-width: 150px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(to right, var(--emerald), var(--gold));
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+
+        .time {
+            font-size: 0.9rem;
+            color: #aaa;
+            min-width: 80px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        /* Controles de velocidade */
+        .speed-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .speed-label {
+            font-size: 0.9rem;
+            color: #aaa;
+            font-family: 'Cinzel', serif;
+            letter-spacing: 1px;
+        }
+
+        .speed-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            color: #ccc;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .speed-btn:hover {
+            background: rgba(212, 175, 55, 0.2);
+            color: var(--gold);
+        }
+
+        .speed-btn.active {
+            background: var(--emerald);
+            color: white;
+            border-color: var(--emerald);
+        }
+
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .volume-icon {
+            color: #aaa;
+            font-size: 1.1rem;
+        }
+
+        .volume-slider {
+            width: 80px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--gold);
+            cursor: pointer;
+        }
+
+        .speed-indicator {
+            position: absolute;
+            top: -25px;
+            right: 10px;
+            background: rgba(4, 99, 7, 0.8);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 0.8rem;
+            font-family: 'Cinzel', serif;
+            display: none;
+        }
+
+        .audio-player:hover .speed-indicator {
+            display: block;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+
+        .nav-btn {
+            background: transparent;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            padding: 15px 30px;
+            border-radius: 4px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Raleway', sans-serif;
+        }
+
+        .nav-btn:hover {
+            background: var(--gold);
+            color: var(--deep-black);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .nav-btn:disabled:hover {
+            background: transparent;
+            color: var(--gold);
+        }
+
+        /* Capítulo especial Evelyn Hugo */
+        .evelyn-chapter {
+            border-top: 4px solid var(--gold);
+            border-bottom: 4px solid var(--gold);
+            position: relative;
+        }
+
+        .evelyn-chapter .chapter-header {
+            border-bottom: none;
+        }
+
+        .evelyn-chapter .chapter-name {
+            font-size: 2.5rem;
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+        }
+
+        /* Transição entre capítulos */
+        .chapter-transition {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--deep-black);
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.8s ease;
+        }
+
+        .chapter-transition.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        /* Indicador de progresso */
+        .progress-indicator {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(10, 10, 10, 0.8);
+            padding: 10px 15px;
+            border-radius: 4px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            font-size: 0.9rem;
+            z-index: 100;
+            display: none;
+            font-family: 'Cinzel', serif;
+        }
+
+        /* Rodapé */
+        .footer {
+            text-align: center;
+            padding: 50px 20px;
+            background: var(--deep-black);
+            border-top: 1px solid rgba(212, 175, 55, 0.1);
+        }
+
+        .final-message {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: var(--gold);
+            margin-bottom: 30px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .signature {
+            font-size: 1.5rem;
+            color: var(--cream);
+            font-style: italic;
+            margin-top: 40px;
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* Botão de scroll */
+        .scroll-down {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--gold);
+            font-size: 2rem;
+            animation: bounce 2s infinite;
+            cursor: pointer;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-10px); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .chapter-index-panel {
+                width: 100%;
+                left: -100%;
+            }
+            
+            .index-number {
+                min-width: 50px;
+            }
+            
+            .birthday-title {
+                font-size: 3rem;
+            }
+            
+            .photo-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .chapter {
+                padding: 25px;
+            }
+            
+            .chapter-name {
+                font-size: 1.8rem;
+            }
+            
+            .audio-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .progress-container {
+                margin: 10px 0;
+            }
+            
+            .navigation-buttons {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-btn {
+                justify-content: center;
+            }
+            
+            .speed-controls {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Índice de Capítulos -->
+    <div class="chapter-index-toggle" id="indexToggle">
+        <i class="fas fa-list-ul"></i>
+    </div>
+
+    <div class="index-overlay" id="indexOverlay"></div>
+
+    <div class="chapter-index-panel" id="indexPanel">
+        <button class="index-close" id="indexClose">
+            <i class="fas fa-times"></i>
+        </button>
+        
+        <div class="index-header">
+            <h3>Capítulos</h3>
+            <p>Clique para navegar</p>
+        </div>
+        
+        <ul class="index-list" id="indexList">
+            <!-- Itens serão inseridos aqui pelo JavaScript -->
+        </ul>
+    </div>
+
+    <!-- Seção de Aniversário -->
+    <section class="birthday-section">
+        <div class="container">
+            <div class="birthday-content">
+                <h1 class="birthday-title">Feliz Aniversário, Amor!<span class="heart">♥</span></h1>
+                <p class="birthday-subtitle">Para a mulher mais linda do mundo</p>
+                <p style="font-size: 1.3rem; max-width: 700px; margin: 0 auto 40px; font-family: 'Playfair Display', serif;">
+                   Feliz aniversário, meu amor. Que você nunca duvide do quanto é especial,<br> do quanto ilumina tudo ao redor e do quanto sou grata por ter você.<br>
+                    <br>Por isso, preparei uma surpresa especial com muito carinho.
+                </p>
+                <button id="exploreBtn" style="
+                    background: transparent;
+                    border: 2px solid var(--gold);
+                    color: var(--gold);
+                    padding: 15px 40px;
+                    font-size: 1.2rem;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    transition: var(--transition);
+                    margin-top: 20px;
+                    font-family: 'Cinzel', serif;
+                ">
+                    Descobrir Presente
+                </button>
+            </div>
+        </div>
+        <div class="scroll-down" id="scrollDownBtn">
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </section>
+
+    <!-- Seção Romântica - Nossas Fotos -->
+    <section class="romantic-section" id="romanticSection">
+        <div class="container">
+            <h2 class="section-title">Nossos Momentos</h2>
+            
+            <div class="photo-grid">
+                <div class="photo-item">
+                    <img src="imagens/IMG_9304.png" alt="Nosso momento especial">
+                    <div class="photo-caption">
+                        <p>"Cada instante ao seu lado é único"</p>
+                    </div>
+                </div>
+                
+                <div class="photo-item">
+                    <img src="imagens/IMG_94.png" alt="Nossa aventura">
+                    <div class="photo-caption">
+                        <p>"Seu sorriso é meu lugar favorito"</p>
+                    </div>
+                </div>
+                
+                <div class="photo-item">
+                    <img src="imagens/IMG_9414.png" alt="Seu sorriso">
+                    <div class="photo-caption">
+                        <p>"Nossos momentos são histórias que guardo no coração"</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="love-notes">
+                <div class="note" id="note1">
+                    "Te amar é a decisão mais certa que já tomei. Cada dia ao seu lado é um capítulo especial na história da minha vida."
+                </div>
+                
+                <div class="note" id="note2">
+                    "Você transformou minha vida e meu coração. Com você, aprendi que o verdadeiro amor realmente existe."
+                </div>
+                
+                <div class="note" id="note3">
+                    "No seu abraço encontro toda paz do mundo, no seu sorriso encontro alegria, no seu amor encontro meu lar. Obrigada por ser você."
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 50px;">
+                <button id="surpriseBtn" style="
+                    background: linear-gradient(to right, var(--emerald), #028a0f);
+                    border: none;
+                    color: white;
+                    padding: 18px 50px;
+                    font-size: 1.3rem;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    transition: var(--transition);
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 15px;
+                    font-family: 'Cinzel', serif;
+                ">
+                    <i class="fas fa-gift"></i>
+                    Revelar Surpresa Especial
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção Audiolivro Surpresa -->
+    <section class="audiobook-section" id="audiobookSection" style="display: none;">
+        <div class="container">
+            <div class="audiobook-intro">
+                <h2 class="audiobook-title">Os Sete Maridos de Evelyn Hugo</h2>
+                <p class="audiobook-description">
+                    Para celebrar seu aniversário, narrei para você esta incrível história.<br>
+                    Lembra quando prometi que leria esse livro com você? Então... fiz do meu jeito, com todo amor, especialmente para você.
+                </p>
+                <p style="color: var(--gold); margin-top: 15px; font-size: 1rem;">
+                    <i class="fas fa-info-circle"></i> Use os controles de velocidade para ajustar a narração ao seu ritmo
+                </p>
+            </div>
+            
+            <!-- Indicador de progresso -->
+            <div class="progress-indicator" id="progressIndicator">
+                Capítulo <span id="currentChapter">1</span> de 19
+            </div>
+            
+            <div class="audiobook-container">
+                <!-- Capítulos serão inseridos aqui pelo JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Transição entre capítulos -->
+    <div class="chapter-transition" id="chapterTransition"></div>
+
+    <!-- Rodapé -->
+    <footer class="footer">
+        <div class="container">
+            <p class="final-message">
+                Que este novo ano da sua vida seja repleto de momentos inesquecíveis,<br>
+                conquistas incríveis e muito amor ao seu redor.
+            </p>
+            
+            <p style="margin: 30px 0; font-size: 1.2rem; font-family: 'Playfair Display', serif;">
+                Com todo meu carinho e amor,
+            </p>
+            
+            <p class="signature">
+                Para sempre sua mamá<span class="heart">♥</span>
+            </p>
+            
+            <div style="margin-top: 50px;">
+                <button id="backToTop" style="
+                    background: transparent;
+                    border: 1px solid var(--gold);
+                    color: var(--gold);
+                    padding: 12px 30px;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    transition: var(--transition);
+                    font-family: 'Cinzel', serif;
+                ">
+                    <i class="fas fa-arrow-up"></i> Voltar ao Início
+                </button>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Capítulos na nova ordem solicitada (19 capítulos no total)
+        const chapters = [
+            { name: "Evelyn Hugo", part: "parte 1", audioSrc: "audios/evelyn página 07 a 13.m4a", duration: "18:03" },
+            { name: "Evelyn Hugo", part: "parte 2", audioSrc: "audios/evelyn página 14 a 19.m4a", duration: "14:45" },
+            { name: "Evelyn Hugo", part: "parte 3", audioSrc: "audios/evelyn página 20 a 32.m4a", duration: "31:27" },
+            { name: "Evelyn Hugo", part: "parte 4", audioSrc: "audios/evelyn página 33 a 39.m4a", duration: "16:05" },
+            { name: "Ernie Diaz", part: "", audioSrc: "audios/Ernie Diaz.m4a.mp4", duration: "35:52" },
+            { name: "Don Adler", part: "parte 1", audioSrc: "audios/Don Adler Cap 6 - parte 1.m4a.mp4", duration: "22:38" },
+            { name: "Don Adler", part: "parte 2", audioSrc: "audios/Don Adler Cap 6 - parte 2.m4a.mp4", duration: "55:24" },
+            { name: "Don Adler", part: "parte 3", audioSrc: "audios/Don Adler Cap 6 - parte 3.m4a.mp4", duration: "23:57" },
+            { name: "Don Adler", part: "parte 4", audioSrc: "audios/Don Adler Cap 6 - parte 4.m4a.mp4", duration: "46:58" },
+            { name: "Don Adler", part: "parte 5", audioSrc: "audios/Don Adler cap 6 - parte 5.m4a.mp4", duration: "14:43" },
+            { name: "Mick Riva", part: "parte 1", audioSrc: "audios/Mick Riva Cap 7 - parte 1.m4a.mp4", duration: "54:00" },
+            { name: "Mick Riva", part: "parte 2", audioSrc: "audios/Mick Riva Cap 7 - parte 2.m4a.mp4", duration: "20:42" },
+            { name: "Rex North", part: "", audioSrc: "audios/Rex North Cap 8.m4a.mp4", duration: "44:31" },
+            { name: "Harry Cameron", part: "parte 1", audioSrc: "audios/Harry Cameron - parte 1.m4a", duration: "0:00" },
+            { name: "Harry Cameron", part: "parte 2", audioSrc: "audios/Harry Cameron - parte 2.m4a", duration: "0:00" },
+            { name: "Max Girard", part: "parte 1", audioSrc: "audios/Max Girard - parte 1.m4a", duration: "0:00" },
+            { name: "Max Girard", part: "parte 2", audioSrc: "audios/Max Girard - parte 2.m4a", duration: "0:00" },
+            { name: "Robert Jamison", part: "parte 1", audioSrc: "audios/Robert Jamison - parte 1.m4a", duration: "0:00" },
+            { name: "Robert Jamison", part: "parte 2", audioSrc: "audios/Robert Jamison - parte 2.m4a", duration: "0:00" }
+        ];
+
+        let currentChapterIndex = 0;
+        let currentAudio = null;
+        let currentSpeed = 1.0;
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', function() {
+            createChapters();
+            createIndex();
+            showChapter(0);
+            setupEventListeners();
+            setupScrollReveal();
+        });
+
+        function createChapters() {
+            const container = document.querySelector('.audiobook-container');
+            
+            chapters.forEach((chapter, index) => {
+                const isEvelyn = chapter.name === "Evelyn Hugo";
+                const chapterElement = document.createElement('div');
+                chapterElement.className = `chapter ${isEvelyn ? 'evelyn-chapter' : ''}`;
+                chapterElement.id = `chapter-${index}`;
+                
+                const partDisplay = chapter.part ? `<div class="chapter-part">${chapter.part}</div>` : '';
+                
+                chapterElement.innerHTML = `
+                    <div class="chapter-header">
+                        <div class="chapter-number">Capítulo ${index + 1}</div>
+                        <h3 class="chapter-name">${chapter.name}</h3>
+                        ${partDisplay}
+                    </div>
+                    
+                    <div class="audio-player">
+                        <div class="speed-indicator" id="speed-indicator-${index}">1.0x</div>
+                        
+                        <div class="audio-controls">
+                            <button class="play-btn" data-chapter="${index}">
+                                <i class="fas fa-play"></i>
+                            </button>
+                            <div class="progress-container">
+                                <div class="progress-bar" id="progress-${index}"></div>
+                            </div>
+                            <div class="time">
+                                <span id="current-time-${index}">0:00</span> / <span id="duration-${index}">${chapter.duration}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="speed-controls">
+                            <span class="speed-label">VELOCIDADE:</span>
+                            <button class="speed-btn" data-speed="0.75" data-chapter="${index}">0.75x</button>
+                            <button class="speed-btn active" data-speed="1.0" data-chapter="${index}">1.0x</button>
+                            <button class="speed-btn" data-speed="1.25" data-chapter="${index}">1.25x</button>
+                            <button class="speed-btn" data-speed="1.5" data-chapter="${index}">1.5x</button>
+                            <button class="speed-btn" data-speed="2.0" data-chapter="${index}">2.0x</button>
+                            
+                            <div class="volume-control">
+                                <i class="fas fa-volume-up volume-icon"></i>
+                                <input type="range" class="volume-slider" min="0" max="1" step="0.1" value="1" data-chapter="${index}">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="navigation-buttons">
+                        ${index > 0 ? 
+                            `<button class="nav-btn prev-btn" data-chapter="${index}">
+                                <i class="fas fa-arrow-left"></i> Capítulo Anterior
+                            </button>` : 
+                            `<button class="nav-btn" disabled>
+                                <i class="fas fa-arrow-left"></i> Capítulo Anterior
+                            </button>`
+                        }
+                        
+                        ${index < chapters.length - 1 ? 
+                            `<button class="nav-btn next-btn" data-chapter="${index}">
+                                Próximo Capítulo <i class="fas fa-arrow-right"></i>
+                            </button>` : 
+                            `<button class="nav-btn finish-btn" data-chapter="${index}" id="finishBtn">
+                                <i class="fas fa-heart"></i> Finalizar História
+                            </button>`
+                        }
+                    </div>
+                `;
+                
+                container.appendChild(chapterElement);
+            });
+        }
+
+        function createIndex() {
+            const indexList = document.getElementById('indexList');
+            indexList.innerHTML = '';
+            
+            chapters.forEach((chapter, index) => {
+                const li = document.createElement('li');
+                li.className = 'index-item';
+                li.style.setProperty('--item-index', index);
+                li.setAttribute('data-chapter-index', index);
+                
+                const partDisplay = chapter.part ? ` <span class="index-part">${chapter.part}</span>` : '';
+                const nameDisplay = chapter.part ? `${chapter.name}` : chapter.name;
+                
+                li.innerHTML = `
+                    <button onclick="jumpToChapter(${index})">
+                        <span class="index-number">Cap. ${index + 1}</span>
+                        <span class="index-name">${nameDisplay}${partDisplay}</span>
+                        <span class="index-duration">${chapter.duration}</span>
+                    </button>
+                `;
+                
+                indexList.appendChild(li);
+            });
+        }
+
+        // Função para pular para um capítulo específico
+        window.jumpToChapter = function(index) {
+            closeIndex();
+            
+            // Se já estiver no capítulo, apenas scroll
+            if (currentChapterIndex === index) {
+                document.getElementById(`chapter-${index}`).scrollIntoView({ behavior: 'smooth', block: 'start' });
+                return;
+            }
+            
+            // Pausar áudio atual
+            if (currentAudio && !currentAudio.paused) {
+                currentAudio.pause();
+                const playBtn = document.querySelector(`.play-btn[data-chapter="${currentChapterIndex}"]`);
+                if (playBtn) playBtn.innerHTML = '<i class="fas fa-play"></i>';
+            }
+            
+            // Transição para o capítulo
+            transitionToChapter(index);
+        }
+
+        function highlightActiveChapter(index) {
+            document.querySelectorAll('.index-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            const activeItem = document.querySelector(`.index-item[data-chapter-index="${index}"]`);
+            if (activeItem) activeItem.classList.add('active');
+        }
+
+        function openIndex() {
+            document.getElementById('indexPanel').classList.add('open');
+            document.getElementById('indexOverlay').classList.add('active');
+            highlightActiveChapter(currentChapterIndex);
+        }
+
+        function closeIndex() {
+            document.getElementById('indexPanel').classList.remove('open');
+            document.getElementById('indexOverlay').classList.remove('active');
+        }
+
+        function showChapter(index) {
+            document.querySelectorAll('.chapter').forEach(chapter => {
+                chapter.classList.remove('active');
+            });
+            
+            const currentChapter = document.getElementById(`chapter-${index}`);
+            if (currentChapter) {
+                currentChapter.classList.add('active');
+                currentChapterIndex = index;
+                updateProgressIndicator(index);
+                highlightActiveChapter(index);
+                
+                setTimeout(() => {
+                    currentChapter.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 100);
+            }
+            
+            updateNavigationButtons();
+        }
+
+        function transitionToChapter(nextIndex) {
+            const transition = document.getElementById('chapterTransition');
+            transition.classList.add('active');
+            
+            if (currentAudio && !currentAudio.paused) {
+                currentAudio.pause();
+                const playBtn = document.querySelector(`.play-btn[data-chapter="${currentChapterIndex}"]`);
+                if (playBtn) playBtn.innerHTML = '<i class="fas fa-play"></i>';
+            }
+            
+            setTimeout(() => {
+                showChapter(nextIndex);
+                
+                setTimeout(() => {
+                    transition.classList.remove('active');
+                }, 800);
+            }, 800);
+        }
+
+        function setupEventListeners() {
+            document.getElementById('exploreBtn').addEventListener('click', function() {
+                document.getElementById('romanticSection').scrollIntoView({ behavior: 'smooth' });
+            });
+            
+            document.getElementById('scrollDownBtn').addEventListener('click', function() {
+                document.getElementById('romanticSection').scrollIntoView({ behavior: 'smooth' });
+            });
+            
+            document.getElementById('surpriseBtn').addEventListener('click', function() {
+                document.getElementById('audiobookSection').style.display = 'block';
+                document.getElementById('progressIndicator').style.display = 'block';
+                document.getElementById('audiobookSection').scrollIntoView({ behavior: 'smooth' });
+            });
+            
+            document.getElementById('backToTop').addEventListener('click', function() {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                document.getElementById('progressIndicator').style.display = 'none';
+            });
+            
+            document.getElementById('indexToggle').addEventListener('click', openIndex);
+            document.getElementById('indexClose').addEventListener('click', closeIndex);
+            document.getElementById('indexOverlay').addEventListener('click', closeIndex);
+            
+            document.querySelectorAll('.play-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const chapterIndex = parseInt(this.getAttribute('data-chapter'));
+                    toggleAudio(chapterIndex, this);
+                });
+            });
+            
+            document.querySelectorAll('.progress-container').forEach(container => {
+                container.addEventListener('click', function(e) {
+                    const rect = this.getBoundingClientRect();
+                    const pos = (e.clientX - rect.left) / rect.width;
+                    const chapterIndex = parseInt(this.closest('.chapter').id.split('-')[1]);
+                    
+                    if (currentAudio && currentAudio.dataset.index == chapterIndex) {
+                        currentAudio.currentTime = pos * currentAudio.duration;
+                    }
+                });
+            });
+            
+            document.querySelectorAll('.speed-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const speed = parseFloat(this.getAttribute('data-speed'));
+                    const chapterIndex = parseInt(this.getAttribute('data-chapter'));
+                    
+                    if (currentAudio && currentAudio.dataset.index == chapterIndex) {
+                        currentAudio.playbackRate = speed;
+                        currentSpeed = speed;
+                        
+                        document.getElementById(`speed-indicator-${chapterIndex}`).textContent = `${speed}x`;
+                        document.getElementById(`speed-indicator-${chapterIndex}`).style.display = 'block';
+                        
+                        setTimeout(() => {
+                            document.getElementById(`speed-indicator-${chapterIndex}`).style.display = 'none';
+                        }, 2000);
+                    }
+                    
+                    const allSpeedBtns = document.querySelectorAll(`.speed-btn[data-chapter="${chapterIndex}"]`);
+                    allSpeedBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+            
+            document.querySelectorAll('.volume-slider').forEach(slider => {
+                slider.addEventListener('input', function() {
+                    const volume = parseFloat(this.value);
+                    const chapterIndex = parseInt(this.getAttribute('data-chapter'));
+                    
+                    if (currentAudio && currentAudio.dataset.index == chapterIndex) {
+                        currentAudio.volume = volume;
+                    }
+                });
+            });
+            
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.next-btn')) {
+                    const chapterIndex = parseInt(e.target.closest('.next-btn').getAttribute('data-chapter'));
+                    transitionToChapter(chapterIndex + 1);
+                }
+                
+                if (e.target.closest('.prev-btn')) {
+                    const chapterIndex = parseInt(e.target.closest('.prev-btn').getAttribute('data-chapter'));
+                    transitionToChapter(chapterIndex - 1);
+                }
+                
+                if (e.target.closest('.finish-btn')) {
+                    document.querySelector('.footer').scrollIntoView({ behavior: 'smooth' });
+                    
+                    setTimeout(() => {
+                        alert("Obrigado por compartilhar essa jornada comigo. Espero que tenha gostado dessa surpresa feita especialmente para você. Te amo mais do que todas as palavras deste audiolivro podem expressar. ❤️");
+                    }, 1000);
+                }
+            });
+            
+            document.addEventListener('keydown', function(e) {
+                if (document.getElementById('indexPanel').classList.contains('open') && e.key === 'Escape') {
+                    closeIndex();
+                }
+                
+                if (document.getElementById('audiobookSection').style.display === 'block') {
+                    if (e.key === 'ArrowRight' && currentChapterIndex < chapters.length - 1) {
+                        transitionToChapter(currentChapterIndex + 1);
+                    }
+                    if (e.key === 'ArrowLeft' && currentChapterIndex > 0) {
+                        transitionToChapter(currentChapterIndex - 1);
+                    }
+                    if (e.key === 'Escape') {
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }
+                    
+                    if (e.key >= '1' && e.key <= '5') {
+                        const speeds = [0.75, 1.0, 1.25, 1.5, 2.0];
+                        const speedIndex = parseInt(e.key) - 1;
+                        const speed = speeds[speedIndex];
+                        
+                        if (currentAudio) {
+                            currentAudio.playbackRate = speed;
+                            currentSpeed = speed;
+                            
+                            document.getElementById(`speed-indicator-${currentChapterIndex}`).textContent = `${speed}x`;
+                            document.getElementById(`speed-indicator-${currentChapterIndex}`).style.display = 'block';
+                            
+                            const allSpeedBtns = document.querySelectorAll(`.speed-btn[data-chapter="${currentChapterIndex}"]`);
+                            allSpeedBtns.forEach(btn => btn.classList.remove('active'));
+                            
+                            const activeBtn = document.querySelector(`.speed-btn[data-chapter="${currentChapterIndex}"][data-speed="${speed}"]`);
+                            if (activeBtn) activeBtn.classList.add('active');
+                            
+                            setTimeout(() => {
+                                document.getElementById(`speed-indicator-${currentChapterIndex}`).style.display = 'none';
+                            }, 2000);
+                        }
+                    }
+                }
+            });
+        }
+
+        function toggleAudio(chapterIndex, button) {
+            if (currentAudio && currentAudio.dataset.index != chapterIndex) {
+                currentAudio.pause();
+                const prevBtn = document.querySelector(`.play-btn[data-chapter="${currentAudio.dataset.index}"]`);
+                if (prevBtn) prevBtn.innerHTML = '<i class="fas fa-play"></i>';
+            }
+            
+            if (currentAudio && currentAudio.dataset.index == chapterIndex) {
+                if (currentAudio.paused) {
+                    currentAudio.play();
+                    button.innerHTML = '<i class="fas fa-pause"></i>';
+                } else {
+                    currentAudio.pause();
+                    button.innerHTML = '<i class="fas fa-play"></i>';
+                }
+                return;
+            }
+            
+            currentAudio = new Audio(chapters[chapterIndex].audioSrc);
+            currentAudio.dataset.index = chapterIndex;
+            currentAudio.playbackRate = currentSpeed;
+            currentAudio.volume = 1.0;
+            
+            currentAudio.addEventListener('timeupdate', function() {
+                const progress = (currentAudio.currentTime / currentAudio.duration) * 100;
+                document.getElementById(`progress-${chapterIndex}`).style.width = `${progress}%`;
+                
+                const currentTime = formatTime(currentAudio.currentTime);
+                document.getElementById(`current-time-${chapterIndex}`).textContent = currentTime;
+            });
+            
+            currentAudio.addEventListener('loadedmetadata', function() {
+                const realDuration = formatTime(currentAudio.duration);
+                if (realDuration !== "0:00") {
+                    document.getElementById(`duration-${chapterIndex}`).textContent = realDuration;
+                }
+            });
+            
+            currentAudio.addEventListener('ended', function() {
+                button.innerHTML = '<i class="fas fa-play"></i>';
+                
+                if (chapterIndex < chapters.length - 1) {
+                    setTimeout(() => {
+                        if (confirm("Gostaria de continuar para o próximo capítulo?")) {
+                            transitionToChapter(chapterIndex + 1);
+                        }
+                    }, 500);
+                }
+            });
+            
+            currentAudio.play();
+            button.innerHTML = '<i class="fas fa-pause"></i>';
+            
+            document.getElementById(`speed-indicator-${chapterIndex}`).textContent = `${currentSpeed}x`;
+        }
+
+        function updateNavigationButtons() {
+            document.querySelectorAll('.prev-btn').forEach(btn => {
+                const chapterIndex = parseInt(btn.getAttribute('data-chapter'));
+                btn.disabled = (chapterIndex === 0);
+            });
+            
+            document.querySelectorAll('.next-btn').forEach(btn => {
+                const chapterIndex = parseInt(btn.getAttribute('data-chapter'));
+                btn.disabled = (chapterIndex === chapters.length - 1);
+            });
+        }
+
+        function updateProgressIndicator(index) {
+            document.getElementById('currentChapter').textContent = index + 1;
+        }
+
+        function setupScrollReveal() {
+            const notes = document.querySelectorAll('.note');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.classList.add('show');
+                        }, 300);
+                    }
+                });
+            }, {
+                threshold: 0.5,
+                rootMargin: '0px 0px -50px 0px'
+            });
+            
+            notes.forEach(note => observer.observe(note));
+        }
+
+        function formatTime(seconds) {
+            if (isNaN(seconds)) return "0:00";
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+        }
+    </script>
+</body>
+</html>
